@@ -1,0 +1,274 @@
+substitutions:
+  name: goodhome
+  freqsys: 60s
+
+esphome:
+  name: ${name}
+  platformio_options:
+    build_unflags:
+      - -std=gnu++11
+    build_flags:
+      - -std=gnu++17
+      - -Wall
+      - -Wextra
+      - -Wno-nonnull-compare
+
+esp32:
+  board: esp32dev
+
+# Enable logging
+logger:
+  level: INFO
+  baud_rate: 921600
+  hardware_uart: UART2 # TX: GPIO16, RX: GPIO17
+
+# read time and timezone Home Assistant
+time:
+  - platform: homeassistant
+    timezone: "Europe/Paris"
+    id: ha_time
+
+# Enable Home Assistant API
+api:
+  password: !secret ha_api_password
+
+ota:
+  password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${name}_hotspot"
+    password: !secret wifi_ap_password
+
+captive_portal:
+
+external_components:
+  - source:
+      type: local
+      path: ./components/
+
+# configuration entry
+uart:
+  id: uart_bus
+  tx_pin: 1
+  rx_pin: 3
+  baud_rate: 115200
+
+GoodHome:
+  id: goodhome_device
+  uart_id: uart_bus
+  
+  # Température courante 
+  temperature:
+    name: "Current temperature"
+
+  # Humidité courante 
+  humidity:
+    name: "Current Humidity"
+
+  # Température de hors-gel, utilisée pendant les périodes d’absence de longue durée
+  antifreeze_temperature:
+    name: "Frost protection temperature"
+
+  # Température d’économie, utilisée pendant les périodes d’économie d’énergie et pendant les périodes d’absence de courte durée
+  eco_temperature:
+    name: "Energy-saving temperature"
+
+  # Température de confort, utilisée pendant les périodes de présence
+  comfort_temperature:
+    name: "Comfort temperature"
+
+  # Température de consigne
+  target_temperature:
+    name: "Target temperature"
+
+  # Consigne de température extèrieure
+  override_temperature:
+    name: "Override temperature"
+
+  # Offset pour la calibration de la sonde de température
+  ctn_ajust:
+    name: "CTN calibration"
+
+  # Période de suspension de chauffe lorsqu’une fenêtre de la pièce est détectée ouverte (en minutes)
+  open_window_timeout:
+    name: "Open window timeOut"
+    mode: box
+
+  # Langue de l'interface de l'ecran LCD
+  language:
+    name: "Language"
+
+  # Mode de fonctionnement
+  # 0: Provisoire, retour au mode par défault à la mise sous tension
+  # 1: Mode manuel, température confort, targetTemp=comfTemp (ou targetTemp=réglage depuis lcd)
+  # 2: Mode manuel, température eco, targetTemp=ecoTemp
+  # 3: Mode manuel, température anti-gel, targetTemp=antifTemp
+  # 4: Provisoire, override, targetTemp=overrideTemp
+  # 5: Absence de longue durée, targetTemp=antifTemp, fin définie par holidayTimeout
+  # 8: Mode manuel, override, targetTemp=overrideTemp
+
+  # 9: Mode auto/forcage manuel, température confort, targetTemp=comfTemp, retour en mode auto à la prochaine période 
+  # 10: Mode auto/forcage manuel, température eco, targetTemp=ecoTemp, retour en mode auto à la prochaine période 
+  # 12: Absence de courte durée, targetTemp=ecoTemp, fin définie par overrideTime
+
+  # 30:
+  # 60: Mode auto, période de présence (confort), targetTemp=comfTemp
+  # 61: Mode auto, période d'absence (éco), targetTemp=ecoTemp
+  target_mode:
+    name: "Target mode"
+
+  # Activer ou désactiver la détection de fenêtres ouvertes
+  # La période de suspension de chauffe est définie par "windowTimeOut", en minutes
+  open_window_detection:
+    name: "Open window detection"
+
+  # Activer ou désactiver le mode AUTO LEARNING
+  self_learning:
+    name: "Self learning mode"
+
+  # Activer ou désactiver le mode manuel (pas de programmation)
+  manual_mode:
+    name: "Manual mode"
+
+  # Activer ou désactiver la détection de présence
+  # Notez que la détection de présence est obligatoire pour la programmation avec l’auto learning
+  presence_sensor:
+    name: "Human presence sensor"
+
+  # Fin de la période d’apprentissage du mode AUTO LEARNING
+  self_learning_improve:
+    name: "Self learning activated"
+
+  # Activation du changement d’heure automatique
+  daylight_saving:
+    name: "Day light saving"
+
+  # Type de pièce
+  room_type:
+    name: "Room type"
+    filters:
+      - map:
+        - 0 -> SALLE A MANGER # DINING ROOM
+        - 1 -> SALON # LOUNGE
+        - 2 -> CUISINE # KITCHEN
+        - 3 -> CHAMBRE # BEDROOM
+        - 4 -> BUREAU # OFFICE
+        - 5 -> SALLE DE BAIN # BATHROOM
+        - 6 -> ENTREE # HALL
+        - 7 -> COULOIR # CORRIDOR
+        - 8 -> TOILETTES # LAVATORY
+        - 9 -> BUANDERIE # LAUNDRY ROOM
+        - 10 -> CELLIER # STOREROOM
+
+  # Nom de la pièce associée
+  room_name:
+    name: "Room name"
+
+  # Numéro de version Hardware
+  hardware_version:
+    name: "Hardware version"
+
+  # Numéro de version Firmware
+  firmware_version:
+    name: "Firmware version"
+
+  # Produit
+  # Exemple: DLRIRFH1800
+  # IR: Iriya
+  # F: Fluid
+  # H: Horizontal
+  # 1800: 1800W
+  code_name:
+    name: "Code name"
+
+  # Rapport Cyclique de pilotage de la résistance de chauffage. 0: pas de chauffe
+  duty_cycle:
+    name: "Heating duty cycle"
+
+  # Date et heure locale de fin de la période d'absence de longue durée (Epoch Timestamp)
+  long_absence_timeout:
+    name: "Long absence timeout"
+
+  # Date et heure locale de fin de la période d'absence de courte durée (Epoch Timestamp)
+  short_absence_timeout:
+    name: "Short absence timeout"
+
+  # Date et heure locale (Epoch Timestamp)
+  local_time:
+    name: "Local time"
+
+  # Nombre de jours d'apprentissage de la période d'apprentissage
+  self_learning_count:
+    name: "Self learning count day"
+
+  # Compteur d'erreurs système
+  fault_counter:
+    name: "System fault counter"
+  
+  # Compteur de redemarrage
+  restart_counter:
+    name: "Restart counter"
+
+climate:
+  - platform: GoodHome
+    name: "Thermostat"
+    
+switch:
+  - platform: restart
+    name: "${name}-reboot"
+
+sensor:
+  - platform: wifi_signal
+    name: "${name}-WiFi Signal Sensor"
+    update_interval: ${freqsys}
+    unit_of_measurement: dB
+    accuracy_decimals: 0
+    force_update: false
+    icon: mdi:wifi
+
+  - platform: uptime
+    id: uptime_seconds
+    name: "${name}-Uptime Sensor"
+    update_interval: ${freqsys}
+    unit_of_measurement: s
+    accuracy_decimals: 0
+    force_update: false
+    icon: mdi:timer
+
+binary_sensor:
+  - platform: status
+    name: "${name}-Status"
+ 
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: ESP IP Address
+    mac_address:
+      name: ESP Mac Wifi Address
+
+  - platform: template
+    name: ${name}-Uptime
+    update_interval: ${freqsys}
+    icon: mdi:clock-start
+    lambda: |-
+      int seconds = (id(uptime_seconds).state);
+      int days = seconds / (24 * 3600);
+      seconds = seconds % (24 * 3600);
+      int hours = seconds / 3600;
+      seconds = seconds % 3600;
+      int minutes = seconds /  60;
+      seconds = seconds % 60;
+      if ( days ) {
+        return { (String(days) +"d " + String(hours) +"h " + String(minutes) +"m "+ String(seconds) +"s").c_str() };
+      } else if ( hours ) {
+        return { (String(hours) +"h " + String(minutes) +"m "+ String(seconds) +"s").c_str() };
+      } else if ( minutes ) {
+        return { (String(minutes) +"m "+ String(seconds) +"s").c_str() };
+      } else {
+        return { (String(seconds) +"s").c_str() };
+      }
