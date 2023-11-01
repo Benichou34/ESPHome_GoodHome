@@ -16,6 +16,7 @@ namespace esphome::goodhome
 
 		void setTemperatureSensors(const GoodHomeSensor* current, GoodHomeNumber* target, GoodHomeNumber* override);
 		void setActuators(GoodHomeSwitch* manual, GoodHomeSwitch* learning_switch, GoodHomeSelect* target_mode);
+		void setActionSensors(const GoodHomeSensor* duty_cyle);
 
 		void update_state();
 
@@ -28,6 +29,7 @@ namespace esphome::goodhome
 
 	private:
 		const GoodHomeSensor* m_current_temperature = nullptr;
+		const GoodHomeSensor* m_heat_duty_cycle = nullptr;
 		GoodHomeNumber* m_target_temperature = nullptr;
 		GoodHomeNumber* m_override_temperature = nullptr;
 		GoodHomeSwitch* m_manual_switch = nullptr;

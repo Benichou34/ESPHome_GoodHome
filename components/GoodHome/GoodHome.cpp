@@ -43,10 +43,10 @@ namespace
 	const std::string cmdName_WIFI_connect("system.WIFI_connect");       // ARM -> ESP
 	const std::string cmdName_WIFI_disconnect("system.WIFI_disconnect"); // ARM -> ESP
 
-	const std::string method_setAttr("setAttr");                         // Set attributes
-	const std::string method_getAttr("getAttr");                         // Get attributes
-	const std::string method_setSch("setSch");                           // Set scheduler
-	const std::string method_getSch("getSch");                           // Get scheduler
+	const std::string method_setAttr("setAttr"); // Set attributes
+	const std::string method_getAttr("getAttr"); // Get attributes
+	const std::string method_setSch("setSch");   // Set scheduler
+	const std::string method_getSch("getSch");   // Get scheduler
 
 	std::string buildCommandFrame(
 		const std::string& cmdName,
@@ -200,7 +200,7 @@ namespace esphome::goodhome
 		if (m_synchroARM)
 		{
 #ifdef USE_HOMEASSISTANT_TIME
-			time::ESPTime espTime = homeassistant::global_homeassistant_time->now();
+			ESPTime espTime = homeassistant::global_homeassistant_time->now();
 			if (espTime.is_valid())
 			{
 				jsValue["localTime"] = to_string(espTime.timestamp);
@@ -240,9 +240,11 @@ namespace esphome::goodhome
 			GoodHomeSwitch* manualMode = reinterpret_cast<GoodHomeSwitch*>(getListenerFromTag("noprog"));
 			GoodHomeSwitch* learningMode = reinterpret_cast<GoodHomeSwitch*>(getListenerFromTag("selfLearning"));
 			GoodHomeSelect* targetMode = reinterpret_cast<GoodHomeSelect*>(getListenerFromTag("targetMode"));
+			GoodHomeSensor* heatDutyCyle = reinterpret_cast<GoodHomeSensor*>(getListenerFromTag("dutyCycle"));
 
 			m_climate->setTemperatureSensors(currentTemperature, targetTemperature, overrideTemperature);
 			m_climate->setActuators(manualMode, learningMode, targetMode);
+			m_climate->setActionSensors(heatDutyCyle);
 		}
 #endif
 

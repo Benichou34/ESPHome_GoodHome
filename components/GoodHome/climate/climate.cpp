@@ -21,6 +21,11 @@ namespace esphome::goodhome
 		m_override_temperature = override;
 	}
 
+	void GoodHomeClimate::setActionSensors(const GoodHomeSensor* duty_cyle)
+	{
+		m_heat_duty_cycle = duty_cyle;
+	}
+
 	void
 	GoodHomeClimate::setActuators(GoodHomeSwitch* manual, GoodHomeSwitch* learning_switch, GoodHomeSelect* target_mode)
 	{
@@ -136,6 +141,18 @@ namespace esphome::goodhome
 
 		if (m_target_temperature)
 			this->target_temperature = m_target_temperature->read_value();
+
+		if (m_heat_duty_cycle)
+		{
+			if (m_heat_duty_cycle->get_state() > 0)
+				this->action = climate::CLIMATE_ACTION_HEATING;
+			else
+				this->action = climate::CLIMATE_ACTION_IDLE;
+		}
+		else
+		{
+			this->action = climate::CLIMATE_ACTION_OFF;
+		}
 
 		if (m_manual_switch && m_learning_switch && m_target_mode)
 		{
