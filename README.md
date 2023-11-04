@@ -1,6 +1,6 @@
 # GoodHome Connect component for [ESPHome](https://esphome.io/)
 
-With this component, ESPHome offers an alternative firmware for GoodHome connected heaters. [GoodHome](https://www.kingfisher.com/en/own-exclusive-brand/goodhome.html) is a brand of Kingfisher Group.  
+With this component, ESPHome offers an alternative firmware for GoodHome connected heaters. [GoodHome](https://www.kingfisher.com/en/about-us/goodhome.html) is a brand of Kingfisher Group.  
 GoodHome products are available online and in B&Q, Castorama and Brico Dépôt stores throughout the UK, France, Poland and Romania. 
 
 ## Features:
