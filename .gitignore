@@ -52,3 +52,6 @@ production/
 *-backups/
 *.kicad_prl
 fp-info-cache
+
+# VS code
+.vscode

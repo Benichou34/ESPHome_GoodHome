@@ -1,11 +1,9 @@
 #include "esphome/components/GoodHome/GoodHome.h"
 #include "esphome/components/GoodHome/sensorListener.h"
-#ifdef USE_HOMEASSISTANT_TIME
-#include "esphome/components/homeassistant/time/homeassistant_time.h"
-#endif
 #include "esphome/components/json/json_util.h"
 #include "esphome/components/wifi/wifi_component.h"
 #include "esphome/core/log.h"
+#include "esphome/core/time.h"
 #ifdef USE_GOODHOME_CLIMATE
 #include "esphome/components/GoodHome/climate/climate.h"
 #endif
@@ -199,14 +197,12 @@ namespace esphome::goodhome
 
 		if (m_synchroARM)
 		{
-#ifdef USE_HOMEASSISTANT_TIME
-			ESPTime espTime = homeassistant::global_homeassistant_time->now();
+			ESPTime espTime = ESPTime::from_epoch_local(::time(nullptr));
 			if (espTime.is_valid())
 			{
-				jsValue["localTime"] = to_string(espTime.timestamp);
-				jsValue["daylightSaving"] = espTime.is_dst ? "1" : "0";
+				jsValue["localTime"] = to_string(espTime.timestamp + ESPTime::timezone_offset());
+				jsValue["daylightSaving"] = "0"; // Disable "Automatic daylight saving"
 			}
-#endif
 
 			jsValue["ssid"] = wifi::global_wifi_component->wifi_ssid();
 			m_synchroARM = false;

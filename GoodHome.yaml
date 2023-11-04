@@ -24,8 +24,8 @@ logger:
 
 # read time and timezone Home Assistant
 time:
-  - platform: homeassistant
-    timezone: "Europe/Paris"
+  - platform: sntp
+    timezone: "CET-1CEST,M3.5.0,M10.5.0/3" # Europe/Paris
     id: ha_time
 
 # Enable Home Assistant API
@@ -146,7 +146,7 @@ GoodHome:
 
   # Activation du changement d’heure automatique
   daylight_saving:
-    name: "Day light saving"
+    name: "Auto daylight saving"
 
   # Type de pièce
   room_type:
