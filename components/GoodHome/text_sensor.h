@@ -1,5 +1,5 @@
 #pragma once
-#include "esphome/components/goodhome/sensorListener.h"
+#include "esphome/components/GoodHome/sensorListener.h"
 #include "esphome/components/text_sensor/text_sensor.h"
 
 namespace esphome::goodhome

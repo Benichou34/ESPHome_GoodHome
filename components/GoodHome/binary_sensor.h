@@ -1,6 +1,6 @@
 #pragma once
+#include "esphome/components/GoodHome/sensorListener.h"
 #include "esphome/components/binary_sensor/binary_sensor.h"
-#include "esphome/components/goodhome/sensorListener.h"
 
 namespace esphome::goodhome
 {

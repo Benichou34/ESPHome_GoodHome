@@ -73,7 +73,7 @@ CONFIG_SCHEMA = (
             cv.GenerateID(): cv.declare_id(GoodHome),
 
             # NUMBER
-            # Température de hors-gel, utilisée pendant les périodes d’absence de longue durée
+            # TempÃ©rature de hors-gel, utilisÃ©e pendant les pÃ©riodes dâ€™absence de longue durÃ©e
             cv.Optional(CONF_ANTIF_TEMPERATURE): number.number_schema(
                 min_value=7,
                 max_value=15,
@@ -83,7 +83,7 @@ CONFIG_SCHEMA = (
                 device_class=DEVICE_CLASS_TEMPERATURE,
                 entity_category=ENTITY_CATEGORY_CONFIG
             ),
-            # Température d’économie, utilisée pendant les périodes d’économie d’énergie et pendant les périodes d’absence de courte durée
+            # TempÃ©rature dâ€™Ã©conomie, utilisÃ©e pendant les pÃ©riodes dâ€™Ã©conomie dâ€™Ã©nergie et pendant les pÃ©riodes dâ€™absence de courte durÃ©e
             cv.Optional(CONF_ECO_TEMPERATURE): number.number_schema(
                 min_value=9,
                 max_value=25,
@@ -93,7 +93,7 @@ CONFIG_SCHEMA = (
                 device_class=DEVICE_CLASS_TEMPERATURE,
                 entity_category=ENTITY_CATEGORY_CONFIG
             ),
-            # Température de confort, utilisée pendant les périodes de présence
+            # TempÃ©rature de confort, utilisÃ©e pendant les pÃ©riodes de prÃ©sence
             cv.Optional(CONF_COMF_TEMPERATURE): number.number_schema(
                 min_value=15,
                 max_value=25,
@@ -103,7 +103,7 @@ CONFIG_SCHEMA = (
                 device_class=DEVICE_CLASS_TEMPERATURE,
                 entity_category=ENTITY_CATEGORY_CONFIG
             ),
-            # Température de consigne
+            # TempÃ©rature de consigne
             cv.Required(CONF_TARGET_TEMPERATURE): number.number_schema(
                 min_value=7,
                 max_value=25,
@@ -113,7 +113,7 @@ CONFIG_SCHEMA = (
                 device_class=DEVICE_CLASS_TEMPERATURE,
                 entity_category=ENTITY_CATEGORY_CONFIG
             ),
-            # Consigne de température override
+            # Consigne de tempÃ©rature override
             cv.Required(CONF_OVERRIDE_TEMPERATURE): number.number_schema(
                 min_value=7,
                 max_value=25,
@@ -123,7 +123,7 @@ CONFIG_SCHEMA = (
                 device_class=DEVICE_CLASS_TEMPERATURE,
                 entity_category=ENTITY_CATEGORY_CONFIG
             ),
-            # Offset pour la calibration de la sonde de température
+            # Offset pour la calibration de la sonde de tempÃ©rature
             cv.Optional(CONF_CTN_ADJUST): number.number_schema(
                 min_value=-5,
                 max_value=5,
@@ -133,7 +133,7 @@ CONFIG_SCHEMA = (
                 device_class=DEVICE_CLASS_TEMPERATURE,
                 entity_category=ENTITY_CATEGORY_CONFIG
             ),
-            # Période de suspension de chauffe lorsqu’une fenêtre de la pièce est détectée ouverte (en minutes)
+            # PÃ©riode de suspension de chauffe lorsquâ€™une fenÃªtre de la piÃ¨ce est dÃ©tectÃ©e ouverte (en minutes)
             cv.Optional(CONF_WINDOW_TIMEOUT): number.number_schema(
                 min_value=1,
                 max_value=180,
@@ -142,7 +142,7 @@ CONFIG_SCHEMA = (
                 unit_of_measurement=UNIT_MINUTE,
                 entity_category=ENTITY_CATEGORY_CONFIG
             ),
-            # Date et heure locale de fin de la période d'absence de longue durée (Epoch Timestamp)
+            # Date et heure locale de fin de la pÃ©riode d'absence de longue durÃ©e (Epoch Timestamp)
             cv.Optional(CONF_LONG_ABSENCE_TIMEOUT): number.number_schema(
                 min_value=0,
                 max_value=4102441200,
@@ -151,7 +151,7 @@ CONFIG_SCHEMA = (
                 unit_of_measurement=UNIT_SECOND,
                 entity_category=ENTITY_CATEGORY_CONFIG
             ),
-            # Date et heure locale de fin de la période d'absence de courte durée (Epoch Timestamp)
+            # Date et heure locale de fin de la pÃ©riode d'absence de courte durÃ©e (Epoch Timestamp)
             cv.Optional(CONF_SHORT_ABSENCE_TIMEOUT): number.number_schema(
                 min_value=0,
                 max_value=4102441200,
@@ -169,20 +169,20 @@ CONFIG_SCHEMA = (
                 options={0: "French", 1: "English"}
             ),
             # Mode de fonctionnement
-            # 0: Provisoire, retour au mode par défault à la mise sous tension
-            # 1: Mode manuel, température confort, targetTemp=comfTemp (ou targetTemp=réglage depuis lcd)
-            # 2: Mode manuel, température eco, targetTemp=ecoTemp
-            # 3: Mode manuel, température anti-gel, targetTemp=antifTemp
+            # 0: Provisoire, retour au mode par dÃ©fault Ã  la mise sous tension
+            # 1: Mode manuel, tempÃ©rature confort, targetTemp=comfTemp (ou targetTemp=rÃ©glage depuis lcd)
+            # 2: Mode manuel, tempÃ©rature eco, targetTemp=ecoTemp
+            # 3: Mode manuel, tempÃ©rature anti-gel, targetTemp=antifTemp
             # 4: Provisoire, override, targetTemp=overrideTemp
-            # 5: Absence de longue durée, targetTemp=antifTemp, fin définie par holidayTimeout
+            # 5: Absence de longue durÃ©e, targetTemp=antifTemp, fin dÃ©finie par holidayTimeout
             # 8: Mode manuel, override, targetTemp=overrideTemp
 
-            # 9: Mode auto/forcage manuel, température confort, targetTemp=comfTemp, retour en mode auto à la prochaine période
-            # 10: Mode auto/forcage manuel, température eco, targetTemp=ecoTemp, retour en mode auto à la prochaine période
-            # 12: Absence de courte durée, targetTemp=ecoTemp, fin définie par overrideTime
+            # 9: Mode auto/forcage manuel, tempÃ©rature confort, targetTemp=comfTemp, retour en mode auto Ã  la prochaine pÃ©riode
+            # 10: Mode auto/forcage manuel, tempÃ©rature eco, targetTemp=ecoTemp, retour en mode auto Ã  la prochaine pÃ©riode
+            # 12: Absence de courte durÃ©e, targetTemp=ecoTemp, fin dÃ©finie par overrideTime
 
-            # 60: Mode auto, période de présence (confort), targetTemp=comfTemp
-            # 61: Mode auto, période d'absence (éco), targetTemp=ecoTemp
+            # 60: Mode auto, pÃ©riode de prÃ©sence (confort), targetTemp=comfTemp
+            # 61: Mode auto, pÃ©riode d'absence (Ã©co), targetTemp=ecoTemp
             cv.Required(CONF_TARGET_MODE): select.select_schema(
                 icon="mdi:target",
                 entity_category=ENTITY_CATEGORY_CONFIG,
@@ -202,27 +202,27 @@ CONFIG_SCHEMA = (
             ),
 
             # SWITCH
-            # Activer ou désactiver la détection de fenêtres ouvertes
-            # La période de suspension de chauffe est définie par "windowTimeOut", en minutes
+            # Activer ou dÃ©sactiver la dÃ©tection de fenÃªtres ouvertes
+            # La pÃ©riode de suspension de chauffe est dÃ©finie par "windowTimeOut", en minutes
             cv.Optional(CONF_OPEN_WINDOW): switch.switch_schema(
                 icon="mdi:window-open",
                 device_class=DEVICE_CLASS_SWITCH,
                 entity_category=ENTITY_CATEGORY_CONFIG
             ),
-            # Activer ou désactiver le mode AUTO LEARNING
+            # Activer ou dÃ©sactiver le mode AUTO LEARNING
             cv.Optional(CONF_SELF_LEARNING): switch.switch_schema(
                 icon="mdi:brain",
                 device_class=DEVICE_CLASS_SWITCH,
                 entity_category=ENTITY_CATEGORY_CONFIG
             ),
-            # Activer ou désactiver le mode manuel (pas de programmation)
+            # Activer ou dÃ©sactiver le mode manuel (pas de programmation)
             cv.Optional(CONF_MANUAL_MODE): switch.switch_schema(
                 icon="mdi:clock-outline",
                 device_class=DEVICE_CLASS_SWITCH,
                 entity_category=ENTITY_CATEGORY_CONFIG
             ),
-            # Activer ou désactiver la détection de présence
-            # Notez que la détection de présence est obligatoire pour la programmation avec l’auto learning
+            # Activer ou dÃ©sactiver la dÃ©tection de prÃ©sence
+            # Notez que la dÃ©tection de prÃ©sence est obligatoire pour la programmation avec lâ€™auto learning
             cv.Optional(CONF_PRESENCE_SENSOR): switch.switch_schema(
                 icon="mdi:human-greeting",
                 device_class=DEVICE_CLASS_SWITCH,
@@ -230,25 +230,25 @@ CONFIG_SCHEMA = (
             ),
 
             # BINARY SENSOR
-            # Fin de la période d’apprentissage du mode AUTO LEARNING
+            # Fin de la pÃ©riode dâ€™apprentissage du mode AUTO LEARNING
             cv.Optional(CONF_LEARNING_IMPROVE): binary_sensor.binary_sensor_schema(
                 icon="mdi:checkbox-marked-circle",
              ),
-            # Activation du changement d’heure automatique
+            # Activation du changement dâ€™heure automatique
             cv.Optional(CONF_DAYLIGHT_SAVING): binary_sensor.binary_sensor_schema(
                 icon="mdi:sun-clock-outline",
             ),
 
             # TEXT SENSOR
-            # Type de pièce
+            # Type de piÃ¨ce
             cv.Optional(CONF_ROOM_TYPE): text_sensor.text_sensor_schema(),
-            # Nom de la pièce associée
+            # Nom de la piÃ¨ce associÃ©e
             cv.Optional(CONF_ROOM_NAME): text_sensor.text_sensor_schema(),
-            # Numéro de version Hardware
+            # NumÃ©ro de version Hardware
             cv.Optional(CONF_HARDWARE_VERSION): text_sensor.text_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC
             ),
-            # Numéro de version Firmware
+            # NumÃ©ro de version Firmware
             cv.Optional(CONF_FIRMWARE_VERSION): text_sensor.text_sensor_schema(
                 entity_category=ENTITY_CATEGORY_DIAGNOSTIC
             ),
@@ -266,7 +266,7 @@ CONFIG_SCHEMA = (
                 device_class=DEVICE_CLASS_TEMPERATURE,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
-            # Humidité courante
+            # HumiditÃ© courante
             cv.Optional(CONF_HUMIDITY): sensor.sensor_schema(
                 icon="mdi:water-percent",
                 unit_of_measurement=UNIT_PERCENT,
@@ -274,7 +274,7 @@ CONFIG_SCHEMA = (
                 device_class=DEVICE_CLASS_HUMIDITY,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
-            # Rapport Cyclique de pilotage de la résistance de chauffage. 0: pas de chauffe
+            # Rapport Cyclique de pilotage de la rÃ©sistance de chauffage. 0: pas de chauffe
             cv.Optional(CONF_DUTY_CYCLE): sensor.sensor_schema(
                 icon="mdi:heat-wave",
                 unit_of_measurement=UNIT_PERCENT,
@@ -289,13 +289,13 @@ CONFIG_SCHEMA = (
                 accuracy_decimals=0,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
-            # Nombre de jours d'apprentissage de la période d'apprentissage
+            # Nombre de jours d'apprentissage de la pÃ©riode d'apprentissage
             cv.Optional(CONF_SELF_LEARNING_COUNT): sensor.sensor_schema(
                 icon="mdi:counter",
                 unit_of_measurement=UNIT_DAY,
                 accuracy_decimals=0,
             ),
-            # Compteur d'erreurs système
+            # Compteur d'erreurs systÃ¨me
             cv.Optional(CONF_FAULT_COUNTER): sensor.sensor_schema(
                 icon="mdi:alert-circle-outline",
                 accuracy_decimals=0,

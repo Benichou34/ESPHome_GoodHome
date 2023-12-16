@@ -1,8 +1,8 @@
 #pragma once
 
-#include "esphome/components/goodhome/NetworkStatus.h"
-#include "esphome/components/goodhome/SerialExchange.h"
-#include "esphome/components/goodhome/sensorListener.h"
+#include "esphome/components/GoodHome/NetworkStatus.h"
+#include "esphome/components/GoodHome/SerialExchange.h"
+#include "esphome/components/GoodHome/sensorListener.h"
 #include "esphome/components/uart/uart.h"
 #include "esphome/core/component.h"
 
