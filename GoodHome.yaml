@@ -33,7 +33,8 @@ api:
   password: !secret ha_api_password
 
 ota:
-  password: !secret ota_password
+  - platform: esphome
+    password: !secret ota_password
 
 wifi:
   ssid: !secret wifi_ssid
@@ -144,9 +145,9 @@ GoodHome:
   self_learning_improve:
     name: "Self learning activated"
 
-  # Activation du changement d’heure automatique
+  # Activation de l'heure d'été
   daylight_saving:
-    name: "Auto daylight saving"
+    name: "Daylight saving"
 
   # Type de pièce
   room_type:
