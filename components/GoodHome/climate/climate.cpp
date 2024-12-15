@@ -27,10 +27,11 @@ namespace esphome::goodhome
 	}
 
 	void
-	GoodHomeClimate::setActuators(GoodHomeSwitch* manual, GoodHomeSwitch* learning_switch, GoodHomeSelect* target_mode)
+	GoodHomeClimate::setActuators(GoodHomeSwitch* manual, GoodHomeSwitch* learning_switch, GoodHomeSwitch* presence_switch, GoodHomeSelect* target_mode)
 	{
 		m_manual_switch = manual;
 		m_learning_switch = learning_switch;
+		m_presence_switch = presence_switch;
 		m_target_mode = target_mode;
 	}
 
@@ -56,7 +57,7 @@ namespace esphome::goodhome
 			ESP_LOGV(TAG, "Setting preset: %s", LOG_STR_ARG(climate_preset_to_string(this->preset.value())));
 		}
 
-		if (m_manual_switch && m_learning_switch && m_target_mode && m_target_temperature)
+		if (m_manual_switch && m_learning_switch && m_presence_switch && m_target_mode && m_target_temperature)
 		{
 			if (this->mode == climate::CLIMATE_MODE_OFF)
 			{
@@ -71,9 +72,14 @@ namespace esphome::goodhome
 				// Set auto mode
 				m_manual_switch->turn_off();
 				m_learning_switch->turn_off();
+				m_presence_switch->turn_off();
 
 				switch (this->preset.value_or(climate::CLIMATE_PRESET_NONE))
 				{
+				case climate::CLIMATE_PRESET_SLEEP:
+					m_target_mode->write_value(12); // SELECT -> Short absence
+					break;
+
 				case climate::CLIMATE_PRESET_AWAY:
 					m_target_mode->write_value(5); // SELECT -> Long absence
 					break;
@@ -86,8 +92,14 @@ namespace esphome::goodhome
 					m_target_mode->write_value(10); // SELECT -> Forced Energy-saving
 					break;
 
-				case climate::CLIMATE_PRESET_ACTIVITY:
+				case climate::CLIMATE_PRESET_HOME:
+					m_presence_switch->turn_on();
 					m_learning_switch->turn_on();
+					m_target_mode->write_value(0); // SELECT -> Default
+					break;
+
+				case climate::CLIMATE_PRESET_ACTIVITY:
+					m_presence_switch->turn_on();
 					m_target_mode->write_value(0); // SELECT -> Default
 					break;
 
@@ -100,11 +112,17 @@ namespace esphome::goodhome
 			{
 				// Set manual mode
 				m_manual_switch->turn_on();
+				m_learning_switch->turn_off();
+				m_presence_switch->turn_off();
 
 				switch (this->preset.value_or(climate::CLIMATE_PRESET_NONE))
 				{
 				case climate::CLIMATE_PRESET_NONE:
 					m_target_mode->write_value(8); // SELECT -> Override
+					break;
+
+				case climate::CLIMATE_PRESET_SLEEP:
+					m_target_mode->write_value(12); // SELECT -> Short absence
 					break;
 
 				case climate::CLIMATE_PRESET_AWAY:
@@ -119,8 +137,14 @@ namespace esphome::goodhome
 					m_target_mode->write_value(2); // SELECT ->  Manual Energy-saving
 					break;
 
-				case climate::CLIMATE_PRESET_ACTIVITY:
+				case climate::CLIMATE_PRESET_HOME:
+					m_presence_switch->turn_on();
 					m_learning_switch->turn_on();
+					m_target_mode->write_value(0); // SELECT -> Default
+					break;
+
+				case climate::CLIMATE_PRESET_ACTIVITY:
+					m_presence_switch->turn_on();
 					m_target_mode->write_value(0); // SELECT -> Default
 					break;
 
@@ -154,9 +178,14 @@ namespace esphome::goodhome
 			this->action = climate::CLIMATE_ACTION_OFF;
 		}
 
-		if (m_manual_switch && m_learning_switch && m_target_mode)
+		if (m_manual_switch && m_learning_switch && m_presence_switch && m_target_mode)
 		{
 			if (m_learning_switch->get_state())
+			{
+				this->mode = climate::CLIMATE_MODE_AUTO;
+				this->preset = climate::CLIMATE_PRESET_HOME;
+			}
+			else if (m_presence_switch->get_state())
 			{
 				this->mode = climate::CLIMATE_MODE_AUTO;
 				this->preset = climate::CLIMATE_PRESET_ACTIVITY;
@@ -183,8 +212,11 @@ namespace esphome::goodhome
 					break;
 
 				case 5:  // Long absence
-				case 12: // Short absence
 					this->preset = climate::CLIMATE_PRESET_AWAY;
+					break;
+
+				case 12: // Short absence
+					this->preset = climate::CLIMATE_PRESET_SLEEP;
 					break;
 
 				case 3: //  Manual Frost protection
@@ -216,11 +248,12 @@ namespace esphome::goodhome
 		traits.set_supported_modes({climate::CLIMATE_MODE_OFF, climate::CLIMATE_MODE_HEAT, climate::CLIMATE_MODE_AUTO});
 		traits.set_supported_presets(
 			{climate::CLIMATE_PRESET_NONE,
-		     climate::CLIMATE_PRESET_AWAY,
-		     climate::CLIMATE_PRESET_COMFORT,
-		     climate::CLIMATE_PRESET_ECO,
-		     climate::CLIMATE_PRESET_ACTIVITY});
-		//		traits.add_supported_custom_preset("SHORT ABSENCE");
+			 climate::CLIMATE_PRESET_HOME,
+			 climate::CLIMATE_PRESET_AWAY,
+			 climate::CLIMATE_PRESET_COMFORT,
+			 climate::CLIMATE_PRESET_ECO,
+			 climate::CLIMATE_PRESET_SLEEP,
+			 climate::CLIMATE_PRESET_ACTIVITY});
 		return traits;
 	}
 

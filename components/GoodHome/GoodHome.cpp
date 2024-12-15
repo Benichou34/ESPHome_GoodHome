@@ -235,11 +235,12 @@ namespace esphome::goodhome
 			GoodHomeNumber* overrideTemperature = reinterpret_cast<GoodHomeNumber*>(getListenerFromTag("overrideTemp"));
 			GoodHomeSwitch* manualMode = reinterpret_cast<GoodHomeSwitch*>(getListenerFromTag("noprog"));
 			GoodHomeSwitch* learningMode = reinterpret_cast<GoodHomeSwitch*>(getListenerFromTag("selfLearning"));
+			GoodHomeSwitch* presenceMode = reinterpret_cast<GoodHomeSwitch*>(getListenerFromTag("occupancyStatus"));
 			GoodHomeSelect* targetMode = reinterpret_cast<GoodHomeSelect*>(getListenerFromTag("targetMode"));
 			GoodHomeSensor* heatDutyCyle = reinterpret_cast<GoodHomeSensor*>(getListenerFromTag("dutyCycle"));
 
 			m_climate->setTemperatureSensors(currentTemperature, targetTemperature, overrideTemperature);
-			m_climate->setActuators(manualMode, learningMode, targetMode);
+			m_climate->setActuators(manualMode, learningMode, presenceMode, targetMode);
 			m_climate->setActionSensors(heatDutyCyle);
 		}
 #endif
