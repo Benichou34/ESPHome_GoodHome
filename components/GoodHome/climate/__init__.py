@@ -11,11 +11,9 @@ from .. import (
 
 GoodHomeClimate = goodhome_ns.class_("GoodHomeClimate", climate.Climate, cg.Component)
 
-CONFIG_SCHEMA = climate.CLIMATE_SCHEMA.extend(
-    {
-        cv.GenerateID(): cv.declare_id(GoodHomeClimate),
-    }
-).extend(GOODHOME_SCHEMA)
+CONFIG_SCHEMA = climate.climate_schema(GoodHomeClimate).extend(
+    GOODHOME_SCHEMA
+)
 
 async def to_code(config):
     cg.add_define("USE_GOODHOME_CLIMATE")
