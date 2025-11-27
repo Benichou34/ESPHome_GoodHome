@@ -86,7 +86,7 @@ namespace esphome::goodhome
 		LOG_SELECT(TAG, "GoodHome select", this);
 		ESP_LOGCONFIG(TAG, "  Tag name %s", tag().c_str());
 		ESP_LOGCONFIG(TAG, "  Options keys:");
-		auto options = select::Select::traits.get_options();
+		const auto& options = select::Select::traits.get_options();
 		for (size_t i = 0; i < m_keys.size(); i++)
 		{
 			ESP_LOGCONFIG(TAG, "    %d: %s", m_keys.at(i), options.at(i).c_str());

@@ -5,16 +5,15 @@ substitutions:
 esphome:
   name: ${name}
   platformio_options:
-    build_unflags:
-      - -std=gnu++11
     build_flags:
-      - -std=gnu++17
       - -Wall
       - -Wextra
       - -Wno-nonnull-compare
 
 esp32:
   board: esp32dev
+  framework:
+    type: esp-idf
 
 # Enable logging
 logger:
@@ -252,24 +251,8 @@ text_sensor:
     mac_address:
       name: ESP Mac Wifi Address
 
-  - platform: template
+  - platform: uptime
     name: ${name}-Uptime
     update_interval: ${freqsys}
-    icon: mdi:clock-start
-    lambda: |-
-      int seconds = (id(uptime_seconds).state);
-      int days = seconds / (24 * 3600);
-      seconds = seconds % (24 * 3600);
-      int hours = seconds / 3600;
-      seconds = seconds % 3600;
-      int minutes = seconds /  60;
-      seconds = seconds % 60;
-      if ( days ) {
-        return { (String(days) +"d " + String(hours) +"h " + String(minutes) +"m "+ String(seconds) +"s").c_str() };
-      } else if ( hours ) {
-        return { (String(hours) +"h " + String(minutes) +"m "+ String(seconds) +"s").c_str() };
-      } else if ( minutes ) {
-        return { (String(minutes) +"m "+ String(seconds) +"s").c_str() };
-      } else {
-        return { (String(seconds) +"s").c_str() };
-      }
+    format:
+      separator: " "

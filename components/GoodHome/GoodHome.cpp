@@ -1,3 +1,4 @@
+#include <esp_sleep.h>
 #include "esphome/components/GoodHome/GoodHome.h"
 #include "esphome/components/GoodHome/sensorListener.h"
 #include "esphome/components/json/json_util.h"
