@@ -53,7 +53,7 @@ namespace
 		const std::string& dstID,
 		const JsonObject& params = {})
 	{
-		DynamicJsonDocument doc(10240);
+		JsonDocument doc;
 
 		doc["type"] = "command";
 		doc["cmdName"] = cmdName;
@@ -75,7 +75,7 @@ namespace
 		const std::string& dstID,
 		const JsonObject& params = {})
 	{
-		DynamicJsonDocument doc(10240);
+		JsonDocument doc;
 
 		doc["type"] = "return";
 		doc["cmdName"] = cmdName;
@@ -98,7 +98,7 @@ namespace
 		const std::string& dstID,
 		const std::string& params)
 	{
-		DynamicJsonDocument doc(10240);
+		JsonDocument doc;
 
 		doc["type"] = "return";
 		doc["cmdName"] = cmdName;
@@ -192,9 +192,9 @@ namespace esphome::goodhome
 
 	void GoodHome::generateOutgoingSetAttrRequest(JsonObject& jsParams)
 	{
-		JsonObject jsRequest = jsParams.createNestedObject("request");
+		JsonObject jsRequest = jsParams["request"].to<JsonObject>();
 		jsRequest["method"] = method_setAttr;
-		JsonObject jsValue = jsRequest.createNestedObject("value");
+		JsonObject jsValue = jsRequest["value"].to<JsonObject>();
 
 		if (m_synchroARM)
 		{
@@ -218,9 +218,9 @@ namespace esphome::goodhome
 
 	void GoodHome::generateOutgoingGetAttrRequest(JsonObject& jsParams)
 	{
-		JsonObject jsRequest = jsParams.createNestedObject("request");
+		JsonObject jsRequest = jsParams["request"].to<JsonObject>();
 		jsRequest["method"] = method_getAttr;
-		JsonArray jsValue = jsRequest.createNestedArray("value");
+		JsonArray jsValue = jsRequest["value"].to<JsonArray>();
 		for (auto& listener : m_listeners)
 			jsValue.add(listener->tag());
 	}
@@ -263,7 +263,7 @@ namespace esphome::goodhome
 
 		if (m_serial.rxJsonAvailable())
 		{
-			DynamicJsonDocument jsDoc(10240);
+			JsonDocument jsDoc;
 			std::string rxJson = m_serial.rxJson();
 
 			deserializeJson(jsDoc, rxJson);
@@ -284,7 +284,7 @@ namespace esphome::goodhome
 
 				// Build returned params
 				JsonObject jsParams = jsDoc.to<JsonObject>();
-				JsonObject jsStatus = jsParams.createNestedObject("status");
+				JsonObject jsStatus = jsParams["status"].to<JsonObject>();
 				jsStatus["result"] = "success";
 
 				bool pendingModifications = false;
@@ -335,7 +335,7 @@ namespace esphome::goodhome
 		else if (m_networkStatus.isStatusChanged())
 		{
 			// Send network status
-			DynamicJsonDocument doc(10240);
+			JsonDocument doc;
 
 			JsonObject jsParams = doc.to<JsonObject>();
 			m_networkStatus.toJson(jsParams);

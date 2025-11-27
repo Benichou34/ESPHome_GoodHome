@@ -95,14 +95,15 @@ namespace esphome::goodhome
 		js["networkID"] = networkID();
 		js["networkOpen"] = isNetworkOpen();
 
-		JsonArray jsModules = js.createNestedArray("moduleList");
+		JsonArray jsModules = js["moduleList"].to<JsonArray>();
 		jsModules.add(moduleID());
 
-		js.createNestedArray("connectedModules");
+		js["connectedModules"].to<JsonArray>();
 		js["wifiConnected"] = isWifiConnected();
 		js["bluetoothOpen"] = isBluetoothOpen();
 
-		js.createNestedArray("bluetoothPaired");
-		js.createNestedObject("topology").createNestedArray("sta_uids");
+		js["bluetoothPaired"].to<JsonArray>();
+		JsonObject jsTopology = js["topology"].to<JsonObject>();
+		jsTopology["sta_uids"].to<JsonArray>();
 	}
 } // namespace esphome::goodhome

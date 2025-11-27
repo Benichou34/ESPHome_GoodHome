@@ -84,7 +84,7 @@ namespace esphome::goodhome
 		for (size_t i = 0; i < m_week.size(); ++i)
 		{
 			std::string key = to_string(i);
-			if (js.containsKey(key))
+			if (js[key].is<JsonArrayConst>())
 			{
 				JsonArrayConst jsDay = js[key].as<JsonArrayConst>();
 				for (size_t j = 0; j < std::min<size_t>(jsDay.size(), 4); ++j)
@@ -102,12 +102,12 @@ namespace esphome::goodhome
 	{
 		for (size_t i = 0; i < m_week.size(); ++i)
 		{
-			JsonArray jsDay = js[to_string(i)].createNestedArray();
+			JsonArray jsDay = js[to_string(i)].add<JsonArray>();
 			for (const auto& period : m_week[i])
 			{
 				if (period.first > std::chrono::minutes::zero() || period.second > std::chrono::minutes::zero())
 				{
-					JsonObject jsPeriod = jsDay.createNestedObject();
+					JsonObject jsPeriod = jsDay.add<JsonObject>();
 					jsPeriod["s"] = to_string(period.first.count());
 					jsPeriod["e"] = to_string(period.second.count());
 				}
