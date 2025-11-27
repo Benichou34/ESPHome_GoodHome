@@ -243,8 +243,7 @@ namespace esphome::goodhome
 	climate::ClimateTraits GoodHomeClimate::traits()
 	{
 		auto traits = climate::ClimateTraits();
-		traits.set_supports_action(true);
-		traits.set_supports_current_temperature(true);
+		traits.add_feature_flags(climate::CLIMATE_SUPPORTS_CURRENT_TEMPERATURE | climate::CLIMATE_SUPPORTS_ACTION);
 		traits.set_supported_modes({climate::CLIMATE_MODE_OFF, climate::CLIMATE_MODE_HEAT, climate::CLIMATE_MODE_AUTO});
 		traits.set_supported_presets(
 			{climate::CLIMATE_PRESET_NONE,
