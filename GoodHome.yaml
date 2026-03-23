@@ -21,7 +21,7 @@ logger:
   baud_rate: 921600
   hardware_uart: UART2 # TX: GPIO16, RX: GPIO17
 
-# read time and timezone Home Assistant
+# read time and timezone SNTP
 time:
   - platform: sntp
     timezone: "CET-1CEST,M3.5.0,M10.5.0/3" # Europe/Paris
@@ -29,7 +29,8 @@ time:
 
 # Enable Home Assistant API
 api:
-  password: !secret ha_api_password
+  encryption:
+    key: !secret device_name_api_key
 
 ota:
   - platform: esphome
@@ -38,6 +39,7 @@ ota:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
+  min_auth_mode: WPA2
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
