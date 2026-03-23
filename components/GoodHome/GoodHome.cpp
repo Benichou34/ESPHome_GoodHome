@@ -205,7 +205,8 @@ namespace esphome::goodhome
 				jsValue["daylightSaving"] = "0"; // Disable "Automatic daylight saving"
 			}
 
-			jsValue["ssid"] = wifi::global_wifi_component->wifi_ssid();
+			char ssid_buf[esphome::wifi::SSID_BUFFER_SIZE];
+			jsValue["ssid"] = wifi::global_wifi_component->wifi_ssid_to(ssid_buf);
 			m_synchroARM = false;
 		}
 
