@@ -1,10 +1,11 @@
 #pragma once
 #include "esphome/components/GoodHome/sensorListener.h"
 #include "esphome/components/binary_sensor/binary_sensor.h"
+#include "esphome/core/component.h"
 
 namespace esphome::goodhome
 {
-	class GoodHomeBinarySensor : public SensorListener, public binary_sensor::BinarySensor, public Component
+	class GoodHomeBinarySensor final : public SensorListener, public binary_sensor::BinarySensor, public Component
 	{
 	public:
 		explicit GoodHomeBinarySensor(const char* tag);
